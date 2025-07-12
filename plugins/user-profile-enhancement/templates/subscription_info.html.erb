@@ -1,0 +1,104 @@
+<div class="subscription-info">
+  <div class="subscription-header">
+    <h3>Subscription Status</h3>
+    <span class="subscription-status <%= subscription.status %>">
+      <%= subscription.status.humanize %>
+    </span>
+  </div>
+  
+  <div class="subscription-details">
+    <div class="detail-item">
+      <div class="label">Plan</div>
+      <div class="value"><%= subscription.plan_display_name %></div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="label">Amount</div>
+      <div class="value">$<%= subscription.amount_in_dollars %>/<%= subscription.plan_type == 'monthly' ? 'month' : 'year' %></div>
+    </div>
+    
+    <% if subscription.is_trial? %>
+      <div class="detail-item">
+        <div class="label">Trial Days Remaining</div>
+        <div class="value"><%= subscription.trial_days_remaining %> days</div>
+      </div>
+    <% end %>
+    
+    <div class="detail-item">
+      <div class="label">Next Billing Date</div>
+      <div class="value"><%= subscription.next_billing_date.strftime('%B %d, %Y') %></div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="label">Subscription Ends</div>
+      <div class="value"><%= subscription.current_period_end.strftime('%B %d, %Y') %></div>
+    </div>
+    
+    <div class="detail-item">
+      <div class="label">Time Remaining</div>
+      <div class="value">
+        <% days_remaining = ((subscription.current_period_end - Time.current) / 1.day).ceil %>
+        <% if days_remaining > 30 %>
+          <%= (days_remaining / 30.0).ceil %> month<%= (days_remaining / 30.0).ceil > 1 ? 's' : '' %> remaining
+        <% elsif days_remaining > 0 %>
+          <%= days_remaining %> day<%= days_remaining > 1 ? 's' : '' %> remaining
+        <% else %>
+          Expired
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <% if subscription.is_trial? && subscription.trial_days_remaining <= 7 %>
+    <div class="trial-warning">
+      <span class="warning-icon">⚠️</span>
+      <span class="warning-text">
+        Your trial ends in <%= subscription.trial_days_remaining %> days. 
+        <a href="/billing" class="btn btn-primary btn-small">Upgrade Now</a>
+      </span>
+    </div>
+  <% end %>
+  
+  <% if subscription.is_past_due? %>
+    <div class="billing-reminder">
+      <span class="reminder-icon">💳</span>
+      <span class="reminder-text">
+        Your payment is past due. 
+        <a href="/billing" class="btn btn-primary btn-small">Update Payment</a>
+      </span>
+    </div>
+  <% end %>
+  
+  <div class="subscription-actions">
+    <a href="/billing" class="btn btn-primary">Manage Billing</a>
+    <% if subscription.is_active? %>
+      <button class="btn btn-danger" onclick="cancelSubscription()">Cancel Subscription</button>
+    <% end %>
+  </div>
+</div>
+
+<script>
+function cancelSubscription() {
+  if (confirm('Are you sure you want to cancel your subscription? You will continue to have access until the end of your current billing period.')) {
+    fetch('/billing/cancel', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        location.reload();
+      } else {
+        alert('Failed to cancel subscription: ' + data.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while canceling your subscription.');
+    });
+  }
+}
+</script> 

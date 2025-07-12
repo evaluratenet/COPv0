@@ -1,0 +1,134 @@
+services:
+  # Main Discourse Application
+  - type: web
+    name: cop-discourse
+    env: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile.discourse
+    dockerContext: .
+    envVars:
+      - key: DISCOURSE_DB_HOST
+        value: ${POSTGRES_HOST}
+      - key: DISCOURSE_DB_NAME
+        value: discourse
+      - key: DISCOURSE_DB_USERNAME
+        value: ${POSTGRES_USER}
+      - key: DISCOURSE_DB_PASSWORD
+        value: ${POSTGRES_PASSWORD}
+      - key: DISCOURSE_REDIS_HOST
+        value: ${REDIS_HOST}
+      - key: DISCOURSE_REDIS_PORT
+        value: 6379
+      - key: DISCOURSE_HOSTNAME
+        value: ${DISCOURSE_HOSTNAME}
+      - key: DISCOURSE_DEVELOPER_EMAILS
+        value: admin@circleofpeers.net
+      - key: DISCOURSE_SMTP_ADDRESS
+        value: ${SMTP_HOST}
+      - key: DISCOURSE_SMTP_PORT
+        value: ${SMTP_PORT}
+      - key: DISCOURSE_SMTP_USER_NAME
+        value: ${SMTP_USERNAME}
+      - key: DISCOURSE_SMTP_PASSWORD
+        value: ${SMTP_PASSWORD}
+      - key: DISCOURSE_SMTP_ENABLE_START_TLS
+        value: true
+      - key: DISCOURSE_SMTP_DOMAIN
+        value: circleofpeers.net
+      - key: DISCOURSE_SECRET_KEY_BASE
+        value: ${SECRET_KEY_BASE}
+      - key: DISCOURSE_CDN_URL
+        value: ${CDN_URL}
+      - key: DISCOURSE_MAX_WORKERS
+        value: 4
+      - key: DISCOURSE_MIN_WORKERS
+        value: 2
+      - key: DISCOURSE_QUEUE_TIMEOUT
+        value: 30
+      - key: DISCOURSE_LOG_LEVEL
+        value: info
+      - key: DISCOURSE_ENABLE_LOGGING
+        value: true
+    healthCheckPath: /health
+    autoDeploy: true
+
+  # AI Service for Content Moderation
+  - type: web
+    name: cop-ai-service
+    env: docker
+    plan: starter
+    dockerfilePath: ./ai_service/Dockerfile
+    dockerContext: ./ai_service
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/discourse
+      - key: REDIS_URL
+        value: redis://${REDIS_HOST}:6379
+      - key: OPENAI_API_KEY
+        value: ${OPENAI_API_KEY}
+      - key: DISCOURSE_API_KEY
+        value: ${DISCOURSE_API_KEY}
+      - key: DISCOURSE_API_USERNAME
+        value: system
+      - key: DISCOURSE_BASE_URL
+        value: https://${DISCOURSE_HOSTNAME}
+      - key: LOG_LEVEL
+        value: info
+      - key: ENVIRONMENT
+        value: production
+      - key: MAX_WORKERS
+        value: 4
+      - key: WORKER_TIMEOUT
+        value: 30
+    healthCheckPath: /health
+    autoDeploy: true
+
+  # Landing Page Service
+  - type: web
+    name: cop-landing-page
+    env: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile.landing
+    dockerContext: .
+    envVars:
+      - key: DISCOURSE_HOSTNAME
+        value: ${DISCOURSE_HOSTNAME}
+      - key: DATABASE_URL
+        value: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/discourse
+    healthCheckPath: /health
+    autoDeploy: true
+
+databases:
+  # PostgreSQL Database
+  - name: cop-postgres
+    databaseName: discourse
+    user: discourse
+    plan: starter
+    ipAllowList: []
+
+  # Redis Cache
+  - name: cop-redis
+    databaseName: redis
+    plan: starter
+    ipAllowList: []
+
+envVars:
+  # Application Configuration
+  - key: DISCOURSE_HOSTNAME
+    value: circleofpeers.net
+  - key: CDN_URL
+    value: https://cdn.circleofpeers.net
+  - key: SECRET_KEY_BASE
+    generateValue: true
+  - key: OPENAI_API_KEY
+    sync: false
+  - key: DISCOURSE_API_KEY
+    sync: false
+  - key: SMTP_HOST
+    value: smtp.circleofpeers.net
+  - key: SMTP_PORT
+    value: 587
+  - key: SMTP_USERNAME
+    sync: false
+  - key: SMTP_PASSWORD
+    sync: false 

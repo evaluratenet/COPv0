@@ -1,0 +1,9 @@
+name: terms-acknowledgment
+version: 1.0.0
+about: Handles Terms and Conditions acknowledgment during user signup
+authors: Circle of Peers Team
+contact_emails: admin@circleofpeers.net
+url: https://github.com/circleofpeers/discourse-terms-acknowledgment
+required_version: 3.0.0
+license_url: https://github.com/circleofpeers/discourse-terms-acknowledgment/blob/main/LICENSE
+transpile_js: true 

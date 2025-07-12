@@ -1,0 +1,380 @@
+// AI Verification Plugin Styles
+
+.verification-assessment {
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  
+  .assessment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    
+    .user-info {
+      h3 {
+        margin: 0 0 5px 0;
+        color: #333;
+      }
+      
+      .user-details {
+        color: #666;
+        font-size: 14px;
+      }
+    }
+    
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      
+      &.pending {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+      }
+      
+      &.approved {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      
+      &.rejected {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      
+      &.needs_info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+    }
+  }
+  
+  .ai-assessment {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    
+    .recommendation {
+      font-weight: 600;
+      margin-bottom: 10px;
+      
+      &.approve {
+        color: #28a745;
+      }
+      
+      &.reject {
+        color: #dc3545;
+      }
+      
+      &.review_required {
+        color: #ffc107;
+      }
+    }
+    
+    .confidence-score {
+      display: inline-block;
+      background: #e9ecef;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .risk-factors {
+      margin-top: 10px;
+      
+      .risk-factor {
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        font-size: 13px;
+        
+        &.high {
+          background: #f8d7da;
+          color: #721c24;
+          border-left: 4px solid #dc3545;
+        }
+        
+        &.medium {
+          background: #fff3cd;
+          color: #856404;
+          border-left: 4px solid #ffc107;
+        }
+        
+        &.low {
+          background: #d1ecf1;
+          color: #0c5460;
+          border-left: 4px solid #17a2b8;
+        }
+      }
+    }
+  }
+  
+  .admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    
+    .btn {
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      
+      &.btn-approve {
+        background: #28a745;
+        color: white;
+        
+        &:hover {
+          background: #218838;
+        }
+      }
+      
+      &.btn-reject {
+        background: #dc3545;
+        color: white;
+        
+        &:hover {
+          background: #c82333;
+        }
+      }
+      
+      &.btn-info {
+        background: #17a2b8;
+        color: white;
+        
+        &:hover {
+          background: #138496;
+        }
+      }
+      
+      &.btn-review {
+        background: #6c757d;
+        color: white;
+        
+        &:hover {
+          background: #5a6268;
+        }
+      }
+    }
+  }
+}
+
+.verification-filters {
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  
+  .filter-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #666;
+        margin-bottom: 4px;
+      }
+      
+      select, input {
+        padding: 6px 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.verification-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+  
+  .stat-card {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      
+      &.pending {
+        color: #ffc107;
+      }
+      
+      &.approved {
+        color: #28a745;
+      }
+      
+      &.rejected {
+        color: #dc3545;
+      }
+      
+      &.needs_info {
+        color: #17a2b8;
+      }
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+  }
+}
+
+.verification-detail {
+  .user-profile {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      
+      .profile-item {
+        .label {
+          font-size: 12px;
+          font-weight: 600;
+          color: #666;
+          text-transform: uppercase;
+          margin-bottom: 4px;
+        }
+        
+        .value {
+          font-size: 14px;
+          color: #333;
+        }
+      }
+    }
+  }
+  
+  .assessment-timeline {
+    margin-top: 20px;
+    
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      
+      .timestamp {
+        font-size: 12px;
+        color: #666;
+        min-width: 120px;
+      }
+      
+      .action {
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .details {
+        font-size: 13px;
+        color: #666;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.bulk-actions {
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  
+  .bulk-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    .select-all {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .bulk-buttons {
+      display: flex;
+      gap: 10px;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .verification-assessment {
+    .assessment-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .admin-actions {
+      flex-direction: column;
+      
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+  
+  .verification-filters {
+    .filter-row {
+      flex-direction: column;
+      align-items: stretch;
+      
+      .filter-group {
+        width: 100%;
+      }
+    }
+  }
+  
+  .verification-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .verification-detail {
+    .user-profile {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+} 

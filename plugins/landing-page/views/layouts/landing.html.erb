@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= @page_title || 'Circle of Peers' %></title>
+  <meta name="description" content="<%= @meta_description || 'Secure peer discussion for C-level executives' %>">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="<%= @page_title || 'Circle of Peers' %>">
+  <meta property="og:description" content="<%= @meta_description || 'Secure peer discussion for C-level executives' %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= request.original_url %>">
+  <meta property="og:image" content="<%= asset_url('COPLogo.png') %>">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= @page_title || 'Circle of Peers' %>">
+  <meta name="twitter:description" content="<%= @meta_description || 'Secure peer discussion for C-level executives' %>">
+  <meta name="twitter:image" content="<%= asset_url('COPLogo.png') %>">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="<%= asset_url('COPLogo.png') %>">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  
+  <%= stylesheet_link_tag 'landing-page', media: 'all' %>
+  <%= javascript_include_tag 'landing-page', defer: true %>
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Circle of Peers",
+    "url": "https://circleofpeers.net",
+    "logo": "<%= asset_url('COPLogo.png') %>",
+    "description": "A secure, high-trust platform built exclusively for C-level professionals",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "admin@circleofpeers.net",
+      "contactType": "customer service"
+    }
+  }
+  </script>
+</head>
+<body class="landing-page">
+  <%= yield %>
+  
+  <!-- Analytics (if configured) -->
+  <% if Rails.env.production? %>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <!-- Facebook Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', 'FB_PIXEL_ID');
+      fbq('track', 'PageView');
+    </script>
+  <% end %>
+</body>
+</html> 

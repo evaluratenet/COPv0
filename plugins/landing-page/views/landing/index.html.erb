@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= @page_title %></title>
+  <meta name="description" content="<%= @meta_description %>">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="<%= @page_title %>">
+  <meta property="og:description" content="<%= @meta_description %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= request.original_url %>">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= @page_title %>">
+  <meta name="twitter:description" content="<%= @meta_description %>">
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  
+  <%= stylesheet_link_tag 'landing-page', media: 'all' %>
+  <%= javascript_include_tag 'landing-page' %>
+</head>
+<body class="landing-page">
+  <!-- Header -->
+  <header class="landing-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>Circle of Peers</h1>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="/signup" class="btn btn-primary">Join Now</a></li>
+            <li><a href="/login" class="btn btn-secondary">Sign In</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Welcome to Circle of Peers</h1>
+        <p class="hero-subtitle">
+          A secure, high-trust platform built exclusively for C-level professionals who need a space to think out loud, seek perspective, and engage in honest peer dialogue—without the politics or exposure of public forums.
+        </p>
+        <div class="hero-actions">
+          <a href="/signup" class="btn btn-primary btn-large">Request Access</a>
+          <a href="#about" class="btn btn-outline btn-large">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why It Exists</h2>
+        <p>
+          Executives are often expected to have all the answers—yet few have a safe space to share uncertainties, test ideas, or voice concerns. Circle of Peers was created to solve that problem by offering a private, confidential environment where verified leaders can interact as equals.
+        </p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Ask Questions</h3>
+          <p>Share challenges without judgment and get perspective from peers who understand your role.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>Peer Learning</h3>
+          <p>Engage in peer-to-peer learning and support with other C-level executives.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Confidential Discussions</h3>
+          <p>Discuss sensitive strategic or leadership issues in complete confidence.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3>Explore Ideas</h3>
+          <p>Test new ideas with others who understand the same pressures and challenges.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="features" class="how-it-works-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>How It Works</h2>
+      </div>
+      
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Fixed Peer ID</h3>
+          <p>Every user is assigned a <strong>fixed Peer ID</strong> to ensure anonymity by default</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Profile Control</h3>
+          <p>Members may choose to make their profile visible or allow contact by others</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Safety Controls</h3>
+          <p>Users can <strong>block</strong> or <strong>report</strong> peers who violate community trust</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>AI Moderation</h3>
+          <p>All conversations are protected by strict <strong>community guidelines</strong>, with AI agents assisting in real-time moderation</p>
+        </div>
+      </div>
+      
+      <div class="safety-note">
+        <p>
+          <strong>Community Guidelines:</strong> Prohibit the sharing of sensitive company information, promotional activity, or harassment. Human admins review all cases before action is taken.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="values-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>What We Stand For</h2>
+        <p>Circle of Peers is built on four pillars:</p>
+      </div>
+      
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">🕵️</div>
+          <h3>Anonymity by default</h3>
+          <p>Your identity is protected unless you choose to reveal it</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">✅</div>
+          <h3>Verified executive access</h3>
+          <p>Every member is verified as a C-level professional</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">🚫</div>
+          <h3>No selling, no noise</h3>
+          <p>Pure peer discussion without promotional content</p>
+        </div>
+        
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <h3>Peer-powered support</h3>
+          <p>Real insights from executives who've been there</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Join?</h2>
+        <p>
+          Whether you're working through a strategic dilemma, reflecting on leadership challenges, or just want a sounding board from someone who's been there too—Circle of Peers is the place for you.
+        </p>
+        <div class="cta-actions">
+          <a href="/signup" class="btn btn-primary btn-large">Request Access</a>
+          <a href="/login" class="btn btn-outline btn-large">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Snapshot Section -->
+  <section class="community-snapshot-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Community Snapshot</h2>
+        <p>Circle of Peers by the numbers (auto-updated)</p>
+      </div>
+      <div class="snapshot-grid">
+        <div class="snapshot-card main-stat">
+          <div class="stat-label">Total verified C-level members</div>
+          <div class="stat-value"><%= number_with_delimiter(@community_stats[:total_members]) %></div>
+        </div>
+        <div class="snapshot-card breakdown">
+          <div class="stat-label">GM Level</div>
+          <div class="stat-value"><%= @community_stats[:members_by_level]['GM Level'] %></div>
+        </div>
+        <div class="snapshot-card breakdown">
+          <div class="stat-label">MD Level</div>
+          <div class="stat-value"><%= @community_stats[:members_by_level]['MD Level'] %></div>
+        </div>
+        <div class="snapshot-card breakdown">
+          <div class="stat-label">VP Level</div>
+          <div class="stat-value"><%= @community_stats[:members_by_level]['VP Level'] %></div>
+        </div>
+        <div class="snapshot-card breakdown">
+          <div class="stat-label">C-Level</div>
+          <div class="stat-value"><%= @community_stats[:members_by_level]['C-Level'] %></div>
+        </div>
+        <div class="snapshot-card">
+          <div class="stat-label">Weekly active users</div>
+          <div class="stat-value"><%= number_with_delimiter(@community_stats[:weekly_active_users]) %></div>
+        </div>
+        <div class="snapshot-card">
+          <div class="stat-label">Peer connections initiated</div>
+          <div class="stat-value"><%= number_with_delimiter(@community_stats[:peer_connections_initiated]) %></div>
+        </div>
+        <div class="snapshot-card">
+          <div class="stat-label">% of members contributing content</div>
+          <div class="stat-value"><%= @community_stats[:contributing_members_percentage] %>%</div>
+        </div>
+      </div>
+      <div class="snapshot-categories">
+        <h3>Discussions this month</h3>
+        <ul>
+          <% @community_stats[:discussions_by_category].each do |category, count| %>
+            <li><strong><%= category %>:</strong> <%= number_with_delimiter(count) %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Circle of Peers</h3>
+          <p>Secure peer discussion for C-level executives</p>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/features">Features</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="/support">Help Center</a></li>
+            <li><a href="/community-guidelines">Community Guidelines</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:admin@circleofpeers.net">admin@circleofpeers.net</a></li>
+            <li><a href="mailto:support@circleofpeers.net">support@circleofpeers.net</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; <%= Date.current.year %> Circle of Peers. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html> 

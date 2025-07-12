@@ -1,0 +1,39 @@
+FROM discourse/discourse:latest
+
+# Install additional dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy custom plugins
+COPY plugins/ /var/www/discourse/plugins/
+
+# Set up plugin directories
+RUN mkdir -p /var/www/discourse/plugins/landing-page \
+    && mkdir -p /var/www/discourse/plugins/peer-id-assignment \
+    && mkdir -p /var/www/discourse/plugins/session-management \
+    && mkdir -p /var/www/discourse/plugins/ai-moderation \
+    && mkdir -p /var/www/discourse/plugins/terms-acknowledgment \
+    && mkdir -p /var/www/discourse/plugins/stripe-billing
+
+# Copy plugin files
+COPY plugins/landing-page/ /var/www/discourse/plugins/landing-page/
+COPY plugins/peer-id-assignment/ /var/www/discourse/plugins/peer-id-assignment/
+COPY plugins/session-management/ /var/www/discourse/plugins/session-management/
+COPY plugins/ai-moderation/ /var/www/discourse/plugins/ai-moderation/
+COPY plugins/terms-acknowledgment/ /var/www/discourse/plugins/terms-acknowledgment/
+COPY plugins/stripe-billing/ /var/www/discourse/plugins/stripe-billing/
+
+# Set permissions
+RUN chown -R discourse:discourse /var/www/discourse/plugins/
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:80/health || exit 1
+
+# Expose port
+EXPOSE 80
+
+# Start Discourse
+CMD ["/sbin/boot"] 

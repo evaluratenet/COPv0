@@ -1,0 +1,9 @@
+name: peer-id-assignment
+version: 1.0.0
+about: Assigns and manages fixed anonymous Peer IDs for Circle of Peers platform
+authors: Circle of Peers Team
+contact_emails: admin@circleofpeers.net
+url: https://github.com/circleofpeers/discourse-peer-id
+required_version: 3.0.0
+license_url: https://github.com/circleofpeers/discourse-peer-id/blob/main/LICENSE
+transpile_js: true 

@@ -1,0 +1,9 @@
+name: ai-moderation
+version: 1.0.0
+about: AI-powered content moderation and user flagging system for Circle of Peers
+authors: Circle of Peers Team
+contact_emails: admin@circleofpeers.net
+url: https://github.com/circleofpeers/discourse-ai-moderation
+required_version: 3.0.0
+license_url: https://github.com/circleofpeers/discourse-ai-moderation/blob/main/LICENSE
+transpile_js: true 

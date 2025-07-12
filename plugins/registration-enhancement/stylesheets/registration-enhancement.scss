@@ -1,0 +1,263 @@
+// Registration Enhancement Styles
+
+.referrer-email-field {
+  margin-bottom: 1rem;
+  
+  .referrer-email-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--primary-low);
+    border-radius: 4px;
+    font-size: 1rem;
+    
+    &:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+    }
+    
+    &.valid {
+      border-color: var(--success);
+    }
+    
+    &.invalid {
+      border-color: var(--danger);
+    }
+  }
+  
+  .referrer-validation {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    
+    &.valid {
+      color: var(--success);
+    }
+    
+    &.invalid {
+      color: var(--danger);
+    }
+    
+    &.loading {
+      color: var(--primary);
+    }
+  }
+  
+  .referrer-info {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--highlight-low);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    
+    .referrer-name {
+      font-weight: 600;
+      color: var(--primary);
+    }
+  }
+}
+
+.referral-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--highlight-low);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  
+  .referral-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+  }
+  
+  .referral-description {
+    font-size: 0.875rem;
+    color: var(--primary-medium);
+    margin-bottom: 1rem;
+  }
+  
+  .referral-benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      padding: 0.25rem 0;
+      font-size: 0.875rem;
+      
+      &:before {
+        content: "✓";
+        color: var(--success);
+        font-weight: bold;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+// Admin referral management styles
+.admin-referrals {
+  .referral-item {
+    padding: 1rem;
+    border: 1px solid var(--primary-low);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    
+    .referral-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      
+      .referral-users {
+        font-weight: 600;
+      }
+      
+      .referral-status {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        
+        &.pending {
+          background-color: var(--highlight-low);
+          color: var(--primary);
+        }
+        
+        &.active {
+          background-color: var(--success-low);
+          color: var(--success);
+        }
+        
+        &.completed {
+          background-color: var(--success-low);
+          color: var(--success);
+        }
+        
+        &.expired {
+          background-color: var(--danger-low);
+          color: var(--danger);
+        }
+      }
+    }
+    
+    .referral-details {
+      font-size: 0.875rem;
+      color: var(--primary-medium);
+      
+      .detail-item {
+        margin-bottom: 0.25rem;
+        
+        .label {
+          font-weight: 600;
+        }
+      }
+    }
+    
+    .referral-actions {
+      margin-top: 1rem;
+      
+      .btn {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+// User referral dashboard styles
+.user-referrals {
+  .referral-card {
+    padding: 1rem;
+    border: 1px solid var(--primary-low);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    
+    .referral-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      
+      .referred-user {
+        font-weight: 600;
+      }
+      
+      .referral-date {
+        font-size: 0.875rem;
+        color: var(--primary-medium);
+      }
+    }
+    
+    .referral-status {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      
+      &.pending {
+        background-color: var(--highlight-low);
+        color: var(--primary);
+      }
+      
+      &.active {
+        background-color: var(--success-low);
+        color: var(--success);
+      }
+      
+      &.completed {
+        background-color: var(--success-low);
+        color: var(--success);
+      }
+    }
+  }
+  
+  .reward-card {
+    padding: 1rem;
+    border: 1px solid var(--success-low);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    background-color: var(--success-low);
+    
+    .reward-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      
+      .reward-amount {
+        font-weight: 600;
+        color: var(--success);
+      }
+      
+      .reward-date {
+        font-size: 0.875rem;
+        color: var(--primary-medium);
+      }
+    }
+    
+    .reward-status {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      
+      &.pending {
+        background-color: var(--highlight-low);
+        color: var(--primary);
+      }
+      
+      &.applied {
+        background-color: var(--success-low);
+        color: var(--success);
+      }
+      
+      &.expired {
+        background-color: var(--danger-low);
+        color: var(--danger);
+      }
+    }
+  }
+} 

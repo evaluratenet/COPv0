@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # Discourse Core
+  discourse:
+    image: discourse/discourse:latest
+    container_name: cop_discourse
+    ports:
+      - "3000:80"
+    environment:
+      - DISCOURSE_DB_HOST=postgres
+      - DISCOURSE_DB_NAME=discourse
+      - DISCOURSE_DB_USERNAME=discourse
+      - DISCOURSE_DB_PASSWORD=discourse_password
+      - DISCOURSE_REDIS_HOST=redis
+      - DISCOURSE_REDIS_PORT=6379
+      - DISCOURSE_HOSTNAME=localhost:3000
+      - DISCOURSE_DEVELOPER_EMAILS=admin@circleofpeers.net
+      - DISCOURSE_SMTP_ADDRESS=mailtrap
+      - DISCOURSE_SMTP_PORT=2525
+      - DISCOURSE_SMTP_USER_NAME=test
+      - DISCOURSE_SMTP_PASSWORD=test
+      - DISCOURSE_SMTP_ENABLE_START_TLS=true
+      - DISCOURSE_SMTP_DOMAIN=circleofpeers.net
+    volumes:
+      - discourse_data:/var/www/discourse
+      - ./plugins:/var/www/discourse/plugins
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - cop_network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: cop_postgres
+    environment:
+      - POSTGRES_DB=discourse
+      - POSTGRES_USER=discourse
+      - POSTGRES_PASSWORD=discourse_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - cop_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: cop_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cop_network
+
+  # FastAPI AI Service
+  ai_service:
+    build:
+      context: ./ai_service
+      dockerfile: Dockerfile
+    container_name: cop_ai_service
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://discourse:discourse_password@postgres:5432/discourse
+      - REDIS_URL=redis://redis:6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DISCOURSE_API_KEY=${DISCOURSE_API_KEY}
+      - DISCOURSE_API_USERNAME=system
+      - DISCOURSE_BASE_URL=http://discourse:80
+    volumes:
+      - ./ai_service:/app
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - cop_network
+
+  # Mailtrap for email testing
+  mailtrap:
+    image: axllent/mailpit:latest
+    container_name: cop_mailtrap
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - cop_network
+
+volumes:
+  discourse_data:
+  postgres_data:
+  redis_data:
+
+networks:
+  cop_network:
+    driver: bridge 

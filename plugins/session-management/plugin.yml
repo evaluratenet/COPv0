@@ -1,0 +1,12 @@
+name: session-management
+version: 1.0.0
+about: Enforces single-session login for Circle of Peers platform
+about_url: https://github.com/circle-of-peers/session-management
+authors: Circle of Peers Team
+contact_emails: admin@circleofpeers.com
+url: https://github.com/circle-of-peers/session-management
+required_version: 2.7.0
+license_url: https://github.com/circle-of-peers/session-management/blob/main/LICENSE
+gem: session-management
+git: https://github.com/circle-of-peers/session-management.git
+enabled_site_setting: session_management_enabled 
