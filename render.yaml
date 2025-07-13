@@ -22,7 +22,7 @@ services:
       - key: DISCOURSE_HOSTNAME
         value: ${DISCOURSE_HOSTNAME}
       - key: DISCOURSE_DEVELOPER_EMAILS
-        value: admin@circleofpeers.net
+        value: admin@www.circleofpeers.net
       - key: DISCOURSE_SMTP_ADDRESS
         value: ${SMTP_HOST}
       - key: DISCOURSE_SMTP_PORT
@@ -34,7 +34,7 @@ services:
       - key: DISCOURSE_SMTP_ENABLE_START_TLS
         value: true
       - key: DISCOURSE_SMTP_DOMAIN
-        value: circleofpeers.net
+        value: www.circleofpeers.net
       - key: DISCOURSE_SECRET_KEY_BASE
         value: ${SECRET_KEY_BASE}
       - key: DISCOURSE_CDN_URL

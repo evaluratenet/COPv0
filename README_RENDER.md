@@ -30,11 +30,11 @@ OPENAI_MODEL=gpt-4
 
 # Discourse Configuration
 DISCOURSE_API_KEY=your_discourse_api_key
-DISCOURSE_HOSTNAME=circleofpeers.net
-DISCOURSE_CDN_URL=https://cdn.circleofpeers.net
+DISCOURSE_HOSTNAME=www.circleofpeers.net
+DISCOURSE_CDN_URL=https://cdn.www.circleofpeers.net
 
 # Email Configuration
-SMTP_HOST=smtp.circleofpeers.net
+SMTP_HOST=smtp.www.circleofpeers.net
 SMTP_USERNAME=your_smtp_username
 SMTP_PASSWORD=your_smtp_password
 SMTP_PORT=587
@@ -52,10 +52,10 @@ REDIS_PASSWORD=your_redis_password
 
 # Security
 SECRET_KEY_BASE=your_secret_key_base
-DISCOURSE_DEVELOPER_EMAILS=admin@circleofpeers.net
+DISCOURSE_DEVELOPER_EMAILS=admin@www.circleofpeers.net
 
 # AI Service Configuration
-AI_SERVICE_URL=https://ai.circleofpeers.net
+AI_SERVICE_URL=https://ai.www.circleofpeers.net
 AI_SERVICE_API_KEY=your_ai_service_key
 
 # Stripe Configuration
