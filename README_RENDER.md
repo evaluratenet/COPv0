@@ -1,6 +1,6 @@
 # 🚀 Circle of Peers - Render Deployment
 
-Quick deployment guide for the Circle of Peers platform using Render and GitHub.
+Quick deployment guide for the Circle of Peers platform using Render and GitHub Actions.
 
 ## ⚡ Quick Start (5 Minutes)
 
@@ -24,12 +24,44 @@ git push -u origin main
 ### 3. Configure Environment Variables
 In Render Dashboard → Environment tab, add:
 ```bash
+# OpenAI Configuration
 OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=gpt-4
+
+# Discourse Configuration
 DISCOURSE_API_KEY=your_discourse_api_key
+DISCOURSE_HOSTNAME=circleofpeers.net
+DISCOURSE_CDN_URL=https://cdn.circleofpeers.net
+
+# Email Configuration
 SMTP_HOST=smtp.circleofpeers.net
 SMTP_USERNAME=your_smtp_username
 SMTP_PASSWORD=your_smtp_password
-DISCOURSE_HOSTNAME=circleofpeers.net
+SMTP_PORT=587
+SMTP_TLS=true
+
+# Database Configuration
+POSTGRES_HOST=your_postgres_host
+POSTGRES_USER=your_postgres_user
+POSTGRES_PASSWORD=your_postgres_password
+POSTGRES_DB=discourse_production
+
+# Redis Configuration
+REDIS_URL=your_redis_url
+REDIS_PASSWORD=your_redis_password
+
+# Security
+SECRET_KEY_BASE=your_secret_key_base
+DISCOURSE_DEVELOPER_EMAILS=admin@circleofpeers.net
+
+# AI Service Configuration
+AI_SERVICE_URL=https://ai.circleofpeers.net
+AI_SERVICE_API_KEY=your_ai_service_key
+
+# Stripe Configuration
+STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_key
+STRIPE_SECRET_KEY=sk_test_your_stripe_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
 
 ### 4. Deploy!
@@ -42,24 +74,91 @@ Render will automatically:
 - ✅ Configure SSL certificates
 - ✅ Set up monitoring
 
+## 🔧 Technical Requirements
+
+### Prerequisites
+- **Render Account** with API access and billing enabled
+- **GitHub repository** with Actions enabled
+- **Domain name** with DNS access (circleofpeers.net)
+- **OpenAI API key** for AI moderation features
+- **Stripe account** for billing integration
+- **SMTP server** for email notifications
+
+### System Requirements
+- **Discourse**: 2GB RAM, 1 CPU core minimum
+- **AI Service**: 1GB RAM, 1 CPU core minimum
+- **PostgreSQL**: 1GB RAM, 1 CPU core minimum
+- **Redis**: 512MB RAM minimum
+- **Landing Page**: 512MB RAM, 1 CPU core minimum
+
 ## 🏗️ Architecture
 
 ```
 GitHub Repository
        ↓
+GitHub Actions CI/CD
+       ↓
    Render Services
        ↓
 ┌─────────────────┐
 │   Discourse     │ ← Main forum (circleofpeers.net)
+│   (2GB RAM)     │   - Custom plugins
+│   - PostgreSQL  │   - AI moderation
+│   - Redis       │   - User management
 ├─────────────────┤
 │   AI Service    │ ← Content moderation
+│   (1GB RAM)     │   - OpenAI integration
+│   - Python      │   - Flagging system
 ├─────────────────┤
 │ Landing Page    │ ← Marketing site
+│   (512MB RAM)   │   - Community stats
+│   - Static      │   - Registration
 ├─────────────────┤
-│   PostgreSQL    │ ← Database
+│   PostgreSQL    │ ← Database (1GB RAM)
+│   - Discourse   │   - User data
+│   - Plugins     │   - Content
 ├─────────────────┤
-│     Redis       │ ← Cache
+│     Redis       │ ← Cache (512MB RAM)
+│   - Sessions    │   - Caching
+│   - Queues      │   - Real-time
 └─────────────────┘
+```
+
+## 🔄 Automated Deployment Workflow
+
+### GitHub Actions Pipeline
+The platform uses a comprehensive CI/CD pipeline:
+
+```yaml
+# .github/workflows/deploy.yml
+1. Test & Security Scan
+   ↓
+2. Build Docker Images
+   ↓
+3. Push to Container Registry
+   ↓
+4. Deploy to Render (Staging/Production)
+   ↓
+5. Database Migrations
+   ↓
+6. Health Checks
+   ↓
+7. Notifications
+```
+
+### Deployment Triggers
+- **Staging**: Push to `staging` branch
+- **Production**: Push to `main` branch
+- **Pull Requests**: Run tests only
+
+### Required GitHub Secrets
+```yaml
+RENDER_API_KEY: "your-render-api-key"
+RENDER_STAGING_SERVICE_ID: "your-staging-service-id"
+RENDER_PRODUCTION_SERVICE_ID: "your-production-service-id"
+STAGING_URL: "https://staging.circleofpeers.net"
+PRODUCTION_URL: "https://circleofpeers.net"
+SLACK_WEBHOOK_URL: "your-slack-webhook-url"
 ```
 
 ## 🔧 Services
@@ -70,168 +169,295 @@ GitHub Repository
 - **Landing Page**: Marketing and community statistics
 
 ### Infrastructure
-- **PostgreSQL**: Primary database
+- **PostgreSQL**: Primary database with automatic backups
 - **Redis**: Caching and session storage
 - **SSL/TLS**: Automatic HTTPS certificates
 - **Monitoring**: Built-in logs and metrics
 
-## 📊 Monitoring
+### Custom Plugins
+```bash
+plugins/
+├── ai-moderation/          # AI content flagging
+├── ai-verification/        # User verification
+├── session-management/      # Session tracking
+├── stripe-billing/         # Payment processing
+├── user-blocking/          # User management
+├── terms-acknowledgment/   # Legal compliance
+├── landing-page/           # Marketing site
+└── peer-id-assignment/     # Anonymous IDs
+```
 
-### Access Points
-- **Main App**: `https://circleofpeers.net`
-- **AI Service**: `https://ai.circleofpeers.net`
-- **Landing Page**: `https://landing.circleofpeers.net`
+## 📊 Monitoring & Health Checks
+
+### Health Check Endpoints
+- **Discourse**: `https://circleofpeers.net/health`
+- **AI Service**: `https://ai.circleofpeers.net/health`
+- **Landing Page**: `https://landing.circleofpeers.net/health`
+
+### Monitoring Dashboard
 - **Render Dashboard**: [dashboard.render.com](https://dashboard.render.com)
+- **Service Logs**: Real-time log streaming
+- **Performance Metrics**: CPU, memory, response times
+- **Error Tracking**: Automatic error detection
 
-### Health Checks
-- Automatic health monitoring every 30 seconds
-- Real-time logs in Render dashboard
-- Performance metrics and alerts
+### Alert Configuration
+```yaml
+# Render Alerts
+- Service down for >5 minutes
+- Memory usage >80%
+- CPU usage >90%
+- Response time >2 seconds
+- Database connection failures
+```
 
-## 🔄 Deployment Workflow
+## 🔒 Security Configuration
 
-### Development
+### API Key Management
 ```bash
-# Make changes
-git add .
-git commit -m "Add new feature"
-git push origin main
-
-# Render auto-deploys!
+# Rotate keys monthly
+OPENAI_API_KEY=sk-... # OpenAI API
+STRIPE_SECRET_KEY=sk_... # Stripe payments
+DISCOURSE_API_KEY=... # Discourse API
 ```
 
-### Staging
+### Database Security
+- **Encryption at rest**: PostgreSQL data encryption
+- **Encryption in transit**: SSL/TLS for all connections
+- **Access control**: IP whitelisting for database
+- **Backup encryption**: Automated encrypted backups
+
+### SSL/TLS Configuration
 ```bash
-# Create staging branch
-git checkout -b staging
-git push origin staging
+# Automatic certificate renewal
+certbot renew --quiet
 
-# Test in staging environment
-# Merge to main when ready
+# HSTS headers
+add_header Strict-Transport-Security "max-age=31536000" always;
 ```
 
-## 🛠️ Customization
+### Access Control
+- **Admin access**: IP-restricted admin panel
+- **API rate limiting**: 1000 requests/minute
+- **Session management**: 10-minute inactivity timeout
+- **Two-factor authentication**: Required for all users
 
-### Environment Variables
-Configure in Render Dashboard → Environment:
-- `OPENAI_API_KEY`: Your OpenAI API key
-- `DISCOURSE_API_KEY`: Discourse API key
-- `SMTP_*`: Email configuration
-- `DISCOURSE_HOSTNAME`: Your domain
+## 💾 Backup & Recovery
 
-### Custom Domain
-1. Add domain in Render Dashboard
-2. Update DNS records
-3. SSL certificate auto-generated
+### Automated Backups
+```bash
+# Daily database backups
+pg_dump discourse_production | gzip > backup_$(date +%Y%m%d).sql.gz
 
-### Scaling
-- Enable auto-scaling in service settings
-- Configure instance sizes as needed
-- Monitor usage in dashboard
+# Weekly full backups
+tar -czf full_backup_$(date +%Y%m%d).tar.gz /var/discourse/
 
-## 📋 Files Structure
-
+# Monthly archive backups
+aws s3 cp backup_*.sql.gz s3://circleofpeers-backups/
 ```
-circle-of-peers/
-├── render.yaml              # Render configuration
-├── Dockerfile.discourse     # Discourse container
-├── Dockerfile.landing       # Landing page container
-├── ai_service/              # AI service
-│   ├── Dockerfile
-│   ├── main.py
-│   └── requirements.txt
-├── plugins/                 # Custom plugins
-│   ├── landing-page/
-│   ├── peer-id-assignment/
-│   ├── session-management/
-│   ├── ai-moderation/
-│   ├── terms-acknowledgment/
-│   └── stripe-billing/
-├── .github/workflows/       # CI/CD
-│   └── deploy.yml
-└── docs/                    # Documentation
-    ├── RENDER_DEPLOYMENT.md
-    └── README_RENDER.md
+
+### Recovery Procedures
+```bash
+# Database recovery
+gunzip -c backup_20241201.sql.gz | psql discourse_production
+
+# Full system recovery
+tar -xzf full_backup_20241201.tar.gz -C /
+
+# Plugin recovery
+git clone https://github.com/yourusername/circle-of-peers-plugins.git
 ```
+
+### Backup Verification
+- **Daily**: Automated backup integrity checks
+- **Weekly**: Test recovery procedures
+- **Monthly**: Full disaster recovery drill
 
 ## 🚨 Troubleshooting
 
 ### Common Issues
 
 **Service won't start?**
-- Check logs in Render dashboard
-- Verify environment variables
-- Check database connections
+```bash
+# Check logs
+render logs --service discourse-service
+
+# Verify environment variables
+render env list --service discourse-service
+
+# Check database connections
+psql $DATABASE_URL -c "SELECT 1;"
+```
 
 **Database issues?**
-- Verify `POSTGRES_HOST`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
-- Check database logs in Render dashboard
+```bash
+# Check PostgreSQL status
+render logs --service postgres-service
+
+# Verify connection strings
+echo $POSTGRES_HOST
+echo $POSTGRES_USER
+echo $POSTGRES_PASSWORD
+
+# Test database connection
+psql "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$POSTGRES_DB"
+```
 
 **Plugin problems?**
-- Check Discourse logs
-- Verify plugin files are copied
-- Ensure proper permissions
+```bash
+# Check Discourse logs
+render logs --service discourse-service
+
+# Verify plugin installation
+docker exec discourse-service ls -la /var/www/discourse/plugins/
+
+# Test plugin functionality
+curl -H "Api-Key: $DISCOURSE_API_KEY" \
+     -H "Content-Type: application/json" \
+     https://circleofpeers.net/admin/plugins
+```
+
+**AI Service issues?**
+```bash
+# Check AI service logs
+render logs --service ai-service
+
+# Test OpenAI connection
+curl -H "Authorization: Bearer $OPENAI_API_KEY" \
+     https://api.openai.com/v1/models
+
+# Verify API endpoints
+curl https://ai.circleofpeers.net/health
+```
 
 ### Debug Commands
 ```bash
 # Check service health
-curl https://your-service.onrender.com/health
+curl -f https://circleofpeers.net/health || echo "Service down"
 
-# View logs
-# Render Dashboard → Service → Logs
+# View real-time logs
+render logs --service discourse-service --follow
 
-# Test database
-# Use Render's built-in database tools
+# Check resource usage
+render ps --service discourse-service
+
+# Test database connectivity
+psql $DATABASE_URL -c "SELECT version();"
 ```
 
 ## 💰 Cost Optimization
 
-### Free Tier
-- Start with free tier for testing
-- PostgreSQL: 90 days free
-- Redis: 30 days free
-- Web services: Free tier available
+### Resource Allocation
+```yaml
+# Staging Environment (Free tier)
+Discourse: 512MB RAM, 0.5 CPU
+AI Service: 256MB RAM, 0.25 CPU
+PostgreSQL: 256MB RAM, 0.25 CPU
+Redis: 128MB RAM, 0.1 CPU
 
-### Scaling Up
-- Upgrade only when needed
-- Monitor usage in dashboard
-- Use appropriate instance sizes
+# Production Environment
+Discourse: 2GB RAM, 1 CPU ($25/month)
+AI Service: 1GB RAM, 0.5 CPU ($15/month)
+PostgreSQL: 1GB RAM, 1 CPU ($20/month)
+Redis: 512MB RAM, 0.5 CPU ($10/month)
+Total: ~$70/month
+```
 
-## 🔒 Security
+### Scaling Guidelines
+- **Start with free tier** for development
+- **Scale up gradually** based on usage
+- **Monitor costs** in Render dashboard
+- **Use appropriate instance sizes**
 
-### Best Practices
-- Never commit secrets to GitHub
-- Use Render's environment variables
-- Enable SSL/TLS for all services
-- Regular security updates
+## 📋 Files Structure
 
-### Environment Variables
-- Store sensitive data in Render dashboard
-- Rotate keys regularly
-- Use different keys for staging/production
+```
+circle-of-peers/
+├── render.yaml                    # Render configuration
+├── docker-compose.yml            # Local development
+├── Dockerfile.discourse          # Discourse container
+├── Dockerfile.landing            # Landing page container
+├── .github/workflows/            # CI/CD pipeline
+│   └── deploy.yml               # Deployment workflow
+├── ai_service/                   # AI service
+│   ├── Dockerfile
+│   ├── main.py
+│   ├── requirements.txt
+│   └── tests/
+├── plugins/                      # Custom plugins
+│   ├── landing-page/
+│   ├── peer-id-assignment/
+│   ├── session-management/
+│   ├── ai-moderation/
+│   ├── terms-acknowledgment/
+│   ├── stripe-billing/
+│   ├── user-blocking/
+│   ├── user-privacy-settings/
+│   ├── user-profile-enhancement/
+│   ├── user-referral-rewards/
+│   ├── helpdesk-integration/
+│   ├── email-change-verification/
+│   └── ai-verification/
+├── nginx/                        # Web server config
+│   ├── nginx.conf
+│   └── ssl/
+├── monitoring/                   # Monitoring setup
+│   ├── grafana/
+│   ├── prometheus.yml
+│   └── dashboards/
+├── backups/                      # Backup scripts
+│   ├── postgres/
+│   └── redis/
+└── docs/                         # Documentation
+    ├── RENDER_DEPLOYMENT.md
+    ├── README_RENDER.md
+    ├── GETTING_STARTED.md
+    ├── DEVELOPMENT.md
+    └── STAGING_SETUP.md
+```
 
-## 📞 Support
+## 📞 Support & Maintenance
 
 ### Render Support
 - [Documentation](https://docs.render.com)
 - [Community](https://community.render.com)
 - [Status](https://status.render.com)
+- [API Reference](https://api.render.com)
 
 ### GitHub Integration
 - [GitHub Actions](https://github.com/features/actions)
 - [GitHub Pages](https://pages.github.com)
 - [GitHub Issues](https://github.com/features/issues)
+- [GitHub Security](https://github.com/security)
+
+### Maintenance Schedule
+```bash
+# Daily
+- Monitor service health
+- Check backup status
+- Review error logs
+
+# Weekly
+- Update dependencies
+- Review performance metrics
+- Test backup recovery
+
+# Monthly
+- Security updates
+- Cost optimization review
+- Full system audit
+```
 
 ---
 
 **🎉 Ready to deploy!**
 
-Your Circle of Peers platform is configured for production deployment on Render with automatic deployments from GitHub.
+Your Circle of Peers platform is configured for production deployment on Render with automated CI/CD pipeline, comprehensive monitoring, and security best practices.
 
 **Next steps:**
 1. Push code to GitHub
-2. Connect to Render
-3. Configure environment variables
-4. Deploy and test!
+2. Configure GitHub secrets
+3. Connect to Render
+4. Set up environment variables
+5. Deploy and test!
 
-For detailed instructions, see [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) 
+For detailed technical instructions, see [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) 
