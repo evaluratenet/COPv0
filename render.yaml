@@ -110,25 +110,4 @@ databases:
   - name: cop-redis
     databaseName: redis
     plan: starter
-    ipAllowList: []
-
-envVars:
-  # Application Configuration
-  - key: DISCOURSE_HOSTNAME
-    value: circleofpeers.net
-  - key: CDN_URL
-    value: https://cdn.circleofpeers.net
-  - key: SECRET_KEY_BASE
-    generateValue: true
-  - key: OPENAI_API_KEY
-    sync: false
-  - key: DISCOURSE_API_KEY
-    sync: false
-  - key: SMTP_HOST
-    value: smtp.circleofpeers.net
-  - key: SMTP_PORT
-    value: 587
-  - key: SMTP_USERNAME
-    sync: false
-  - key: SMTP_PASSWORD
-    sync: false 
+    ipAllowList: [] 
