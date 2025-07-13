@@ -103,11 +103,11 @@ databases:
   - name: cop-postgres
     databaseName: discourse
     user: discourse
-    plan: starter
+    plan: free
     ipAllowList: []
 
   # Redis Cache
   - name: cop-redis
     databaseName: redis
-    plan: starter
+    plan: free
     ipAllowList: [] 
