@@ -158,32 +158,32 @@ For detailed deployment instructions, see [README_RENDER.md](README_RENDER.md) a
 
 ### 📧 **Email Addresses**
 
-**📫 noreply@www.circleofpeers.net**
+**📫 noreply@circleofpeers.net**
 - System-generated emails (registration, notifications, 2FA codes)
 - Configured with SPF, DKIM, and DMARC for deliverability
 - No reply handling
 
-**👥 support@www.circleofpeers.net**
+**👥 support@circleofpeers.net**
 - User inquiries and technical support
 - Connected to helpdesk system
 - Access issues and billing questions
 
-**🧾 verification@www.circleofpeers.net**
+**🧾 verification@circleofpeers.net**
 - Reference checks during user onboarding
 - Receives reference replies via secure links
 - Monitored by admin team
 
-**🛡 moderation@www.circleofpeers.net**
+**🛡 moderation@circleofpeers.net**
 - AI and user flag notifications
 - Direct moderation concerns from users
 - Admin review notifications
 
-**🧑‍💼 admin@www.circleofpeers.net**
+**🧑‍💼 admin@circleofpeers.net**
 - Main administrative contact
 - Partner and vendor communications
 - Legal requests and executive communications
 
-**💰 billing@www.circleofpeers.net**
+**💰 billing@circleofpeers.net**
 - Payment-related communications
 - Receives Stripe automated receipts
 - Invoice and billing support
