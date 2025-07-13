@@ -17,6 +17,14 @@ We've created a comprehensive staging environment that mirrors production, inclu
 - **📧 Email Testing** with Mailtrap
 - **🔄 Automated Backups** to S3
 
+### ✅ Automated CI/CD Pipeline
+
+- **GitHub Actions** workflow for automated testing and deployment
+- **Docker containerization** for consistent environments
+- **Multi-environment** support (staging/production)
+- **Automated health checks** and monitoring
+- **Security scanning** with CodeQL analysis
+
 ### ✅ Custom Plugins Implemented
 
 1. **Landing Page Plugin** - Dynamic landing page with community statistics
@@ -109,6 +117,46 @@ After the script completes, access:
 4. **AI Moderation**: Create posts to test content moderation
 5. **Terms**: Verify terms acceptance during registration
 
+## 🔄 CI/CD Pipeline
+
+### GitHub Actions Workflow
+
+Our automated deployment pipeline includes:
+
+1. **Testing & Security Scan**
+   - Python dependency installation
+   - Unit and integration tests
+   - Code linting with flake8 and black
+   - Security scanning with CodeQL
+
+2. **Build & Push**
+   - Docker image building for Discourse and Landing page
+   - Container registry integration (GitHub Container Registry)
+   - Multi-stage caching for faster builds
+
+3. **Deployment**
+   - Render API integration for staging/production
+   - Database migrations
+   - Health check verification
+   - Slack notifications
+
+### Deployment Triggers
+
+- **Staging**: Push to `staging` branch
+- **Production**: Push to `main` branch
+- **Pull Requests**: Run tests only
+
+### Required GitHub Secrets
+
+```yaml
+RENDER_API_KEY: "your-render-api-key"
+RENDER_STAGING_SERVICE_ID: "your-staging-service-id"
+RENDER_PRODUCTION_SERVICE_ID: "your-production-service-id"
+STAGING_URL: "https://staging.circleofpeers.net"
+PRODUCTION_URL: "https://circleofpeers.net"
+SLACK_WEBHOOK_URL: "your-slack-webhook-url"
+```
+
 ## 🔧 Development Workflow
 
 ### Working with Plugins
@@ -144,6 +192,19 @@ curl http://localhost/health
 docker-compose -f docker-compose.staging.yml ps
 ```
 
+### CI/CD Development
+
+```bash
+# Test GitHub Actions locally
+act -j test
+
+# View workflow runs
+# Go to GitHub → Actions tab
+
+# Debug deployment issues
+# Check Render dashboard for service logs
+```
+
 ## 📊 What's Included
 
 ### Core Services
@@ -170,6 +231,7 @@ docker-compose -f docker-compose.staging.yml ps
 - **Backups** - Automated data protection
 - **Health Checks** - Service monitoring
 - **Load Balancing** - High availability
+- **Automated CI/CD** - GitHub Actions workflow
 
 ## 🚨 Troubleshooting
 
@@ -200,44 +262,37 @@ docker-compose -f docker-compose.staging.yml exec discourse rails console
 # Then run: Plugin.all.map { |p| [p.name, p.enabled?] }
 ```
 
-## 📚 Documentation
+**CI/CD pipeline issues?**
+```bash
+# Check GitHub Actions logs
+# Go to GitHub → Actions → Recent workflow runs
 
-- **📖 Main README**: Complete project overview
-- **🔧 DEVELOPMENT.md**: Development workflow
-- **🏗️ STAGING_SETUP.md**: Detailed staging guide
-- **📋 TECHNICAL.md**: Technical implementation details
-- **🚀 QUICK_START.md**: Plugin quick start guide
+# Verify secrets are set
+# Go to GitHub → Settings → Secrets and variables → Actions
 
-## 🎯 Next Steps
+# Test Render API connection
+curl -H "Authorization: Bearer $RENDER_API_KEY" \
+     https://api.render.com/v1/services
+```
 
-### Immediate Actions
-1. **Configure Environment** - Update `env.staging` with real API keys
-2. **Test Features** - Run through all core functionality
-3. **Set Up Monitoring** - Configure alerts and dashboards
+### Deployment Debugging
 
-### Development Priorities
-1. **Plugin Development** - Enhance existing plugins
-2. **Testing** - Comprehensive test coverage
-3. **Performance** - Optimize for production load
-4. **Security** - Security audit and hardening
+```bash
+# Check deployment status
+curl -H "Authorization: Bearer $RENDER_API_KEY" \
+     https://api.render.com/v1/services/$SERVICE_ID/deploys
 
-### Production Deployment
-1. **Environment Setup** - Production server configuration
-2. **SSL Certificates** - Let's Encrypt setup
-3. **Monitoring** - Production monitoring setup
-4. **Backup Strategy** - Automated backup verification
+# View service logs
+# Render Dashboard → Service → Logs
 
-## 🆘 Need Help?
+# Test health endpoints
+curl https://your-service.onrender.com/health
+```
 
-1. **Check Documentation** - Review the guides above
-2. **View Logs** - Use troubleshooting commands
-3. **Community Support** - Use Discourse forums
-4. **Development Team** - Contact for technical issues
+## 📚 Additional Resources
 
----
-
-**🎉 You're all set!** 
-
-Your production-like staging environment is ready for development and testing. The platform includes all the core features needed for the Circle of Peers community, with robust monitoring, security, and scalability built in.
-
-Happy coding! 🚀 
+- **Deployment Guide**: [README_RENDER.md](README_RENDER.md)
+- **Staging Setup**: [STAGING_SETUP.md](STAGING_SETUP.md)
+- **Development Guide**: [DEVELOPMENT.md](DEVELOPMENT.md)
+- **System Design**: [System Design Document.md](System%20Design%20Document.md)
+- **User Documentation**: [User Document.md](User%20Document.md) 

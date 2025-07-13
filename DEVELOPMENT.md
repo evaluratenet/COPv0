@@ -58,6 +58,69 @@ docker-compose logs -f ai_service
 - All emails routed to Mailtrap for testing
 - Configure SPF, DKIM, and DMARC for production deliverability
 
+## 🔄 CI/CD Pipeline
+
+### GitHub Actions Workflow
+
+Our automated deployment pipeline includes comprehensive testing and deployment:
+
+#### 1. Testing & Security Scan
+```yaml
+# .github/workflows/deploy.yml
+- Python dependency installation
+- Unit and integration tests with pytest
+- Code linting with flake8 and black
+- Security scanning with CodeQL
+- Multi-language analysis (Python, JavaScript)
+```
+
+#### 2. Build & Push
+```yaml
+- Docker image building for Discourse and Landing page
+- Container registry integration (GitHub Container Registry)
+- Multi-stage caching for faster builds
+- Image tagging with commit SHA and latest tags
+```
+
+#### 3. Deployment
+```yaml
+- Render API integration for staging/production
+- Database migrations
+- Health check verification
+- Slack notifications
+- Automatic rollback on failure
+```
+
+### Deployment Triggers
+
+- **Staging**: Push to `staging` branch
+- **Production**: Push to `main` branch
+- **Pull Requests**: Run tests only
+
+### Required GitHub Secrets
+
+```yaml
+RENDER_API_KEY: "your-render-api-key"
+RENDER_STAGING_SERVICE_ID: "your-staging-service-id"
+RENDER_PRODUCTION_SERVICE_ID: "your-production-service-id"
+STAGING_URL: "https://staging.circleofpeers.net"
+PRODUCTION_URL: "https://circleofpeers.net"
+SLACK_WEBHOOK_URL: "your-slack-webhook-url"
+```
+
+### Local CI/CD Testing
+
+```bash
+# Test GitHub Actions locally
+act -j test
+
+# View workflow runs
+# Go to GitHub → Actions tab
+
+# Debug deployment issues
+# Check Render dashboard for service logs
+```
+
 ## 🏗️ Architecture Overview
 
 ### Services
@@ -201,186 +264,107 @@ const testPosts = [
     severity: 2
   }
 ];
-
-// Test billing scenarios
-const billingTests = [
-  {
-    scenario: "New user registration",
-    expected: "30-day trial subscription created"
-  },
-  {
-    scenario: "Trial expiration",
-    expected: "Payment attempt or payment method request"
-  },
-  {
-    scenario: "Monthly subscription",
-    expected: "$50/month billing via Stripe"
-  },
-  {
-    scenario: "Annual subscription",
-    expected: "$500/year billing via Stripe"
-  },
-  {
-    scenario: "Payment failure",
-    expected: "Retry logic with notifications"
-  }
-];
 ```
 
-## 📊 Monitoring & Debugging
-
-### View Logs
-```bash
-# All services
-docker-compose logs
-
-# Specific service
-docker-compose logs discourse
-docker-compose logs ai_service
-
-# Follow logs
-docker-compose logs -f
-```
-
-### Database Access
-```bash
-# PostgreSQL
-docker-compose exec postgres psql -U discourse -d discourse
-
-# Redis
-docker-compose exec redis redis-cli
-```
-
-### Email Testing
-```bash
-# View email logs in Mailtrap
-open http://localhost:8025
-
-# Test email sending
-docker-compose exec discourse rails console
-# In console: ActionMailer::Base.delivery_method = :test
-```
-
-### Discourse Console
-```bash
-docker-compose exec discourse rails console
-```
-
-## 🔐 Security Considerations
-
-### Development vs Production
-
-- **Development**: Uses Mailtrap for email testing
-- **Production**: Configure real SMTP server
-- **Development**: Basic security settings
-- **Production**: Full SSL, security headers, etc.
-
-### API Keys
-
-- Never commit `.env` file
-- Use environment variables for all secrets
-- Rotate API keys regularly
-- Monitor API usage
-
-## 🚀 Deployment Preparation
-
-### Production Checklist
-
-- [ ] Configure production SMTP with all email addresses
-- [ ] Set up SPF, DKIM, and DMARC for email deliverability
-- [ ] Configure helpdesk integration for support@circleofpeers.net
-- [ ] Set up SSL certificates
-- [ ] Configure backup strategy
-- [ ] Set production environment variables
-- [ ] Test all plugins in staging
-- [ ] Configure monitoring and logging
-- [ ] Set up CI/CD pipeline
-
-### Environment Variables
+### Automated Testing
 
 ```bash
-# Production .env
-NODE_ENV=production
-RAILS_ENV=production
-DISCOURSE_HOSTNAME=circleofpeers.net
-OPENAI_API_KEY=your_production_key
-DISCOURSE_API_KEY=your_production_key
+# Run all tests
+docker-compose exec ai_service python -m pytest
 
-# Email Configuration
-SMTP_ADDRESS=smtp.circleofpeers.net
-SMTP_PORT=587
-SMTP_USERNAME=noreply@circleofpeers.net
-SMTP_PASSWORD=your_smtp_password
+# Run specific test file
+docker-compose exec ai_service python -m pytest tests/test_moderation.py
 
-# Stripe Configuration
-STRIPE_PUBLISHABLE_KEY=pk_live_...
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
+# Run with coverage
+docker-compose exec ai_service python -m pytest --cov=app tests/
 ```
 
-## 📝 Plugin Development Tips
+## 🚀 Deployment
 
-### Best Practices
-
-1. **Use Discourse hooks** instead of monkey-patching
-2. **Test thoroughly** before deploying
-3. **Follow Discourse conventions** for naming and structure
-4. **Use background jobs** for heavy operations
-5. **Cache expensive operations** with Redis
-6. **Log important events** for debugging
-
-### Common Patterns
-
-```ruby
-# Hook into user events
-on(:user_approved) do |user|
-  # Your logic here
-end
-
-# Add to serializers
-add_to_serializer(:user, :custom_field) do
-  object.custom_fields['your_field']
-end
-
-# Create background jobs
-module Jobs
-  class YourJob < ::Jobs::Base
-    def execute(args)
-      # Job logic
-    end
-  end
-end
-```
-
-## 🆘 Troubleshooting
-
-### Common Issues
-
-1. **Discourse won't start**: Check PostgreSQL connection
-2. **AI service errors**: Verify OpenAI API key
-3. **Plugin not loading**: Check plugin.yml syntax
-4. **Database connection issues**: Verify credentials in .env
-
-### Debug Commands
+### Staging Deployment
 
 ```bash
+# Create staging branch
+git checkout -b staging
+git push origin staging
+
+# GitHub Actions will automatically:
+# 1. Run tests
+# 2. Build Docker images
+# 3. Deploy to staging environment
+# 4. Run health checks
+# 5. Send notifications
+```
+
+### Production Deployment
+
+```bash
+# Merge to main branch
+git checkout main
+git merge staging
+git push origin main
+
+# GitHub Actions will automatically:
+# 1. Run comprehensive tests
+# 2. Build production images
+# 3. Deploy to production
+# 4. Run database migrations
+# 5. Verify health checks
+# 6. Send Slack notifications
+```
+
+### Deployment Monitoring
+
+```bash
+# Check deployment status
+curl -H "Authorization: Bearer $RENDER_API_KEY" \
+     https://api.render.com/v1/services/$SERVICE_ID/deploys
+
+# View service logs
+# Render Dashboard → Service → Logs
+
+# Test health endpoints
+curl https://your-service.onrender.com/health
+```
+
+## 🔍 Debugging
+
+### CI/CD Issues
+
+```bash
+# Check GitHub Actions logs
+# Go to GitHub → Actions → Recent workflow runs
+
+# Verify secrets are set
+# Go to GitHub → Settings → Secrets and variables → Actions
+
+# Test Render API connection
+curl -H "Authorization: Bearer $RENDER_API_KEY" \
+     https://api.render.com/v1/services
+```
+
+### Local Development Issues
+
+```bash
+# Check service logs
+docker-compose logs -f service_name
+
 # Restart specific service
-docker-compose restart discourse
+docker-compose restart service_name
 
 # Rebuild containers
 docker-compose build --no-cache
 
 # Reset database
-docker-compose down -v
-docker-compose up -d
+docker-compose exec discourse rails db:reset
 ```
 
-## 📚 Resources
+## 📚 Additional Resources
 
-- [Discourse Plugin Development](https://docs.discourse.org/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Docker Compose Reference](https://docs.docker.com/compose/)
-- [OpenAI API Documentation](https://platform.openai.com/docs/) 
+- **Deployment Guide**: [README_RENDER.md](README_RENDER.md)
+- **Getting Started**: [GETTING_STARTED.md](GETTING_STARTED.md)
+- **Staging Setup**: [STAGING_SETUP.md](STAGING_SETUP.md)
+- **System Design**: [System Design Document.md](System%20Design%20Document.md) 
 
 ## Documentation
 

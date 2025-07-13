@@ -18,6 +18,7 @@ It addresses the loneliness of leadership by enabling peer-to-peer exchange in a
 * **Email Change Verification** system with risk-based admin approval for corporate-to-private email changes
 * All content encrypted in transit and at rest
 * No user tracking, profiling, or third-party data sharing
+* **Session management** with 10-minute inactivity warnings and auto-logout
 
 ### 🔐 Onboarding & Verification
 
@@ -81,6 +82,25 @@ It addresses the loneliness of leadership by enabling peer-to-peer exchange in a
 * **Storage:** Wasabi (S3-compatible) for documents, logs, media
 * **Database:** PostgreSQL (Discourse default) with custom billing tables
 * **Authentication:** Devise + email-based 2FA + session management
+* **Deployment:** Render with automated CI/CD via GitHub Actions
+* **Monitoring:** Prometheus + Grafana for performance tracking
+
+---
+
+## 🚀 Deployment & Infrastructure
+
+### Automated CI/CD Pipeline
+* **GitHub Actions** workflow for automated testing and deployment
+* **Docker containerization** for consistent environments
+* **Render cloud hosting** with automatic scaling
+* **Health checks** and monitoring for all services
+* **Automated backups** with disaster recovery procedures
+
+### Environment Management
+* **Staging environment** for testing and development
+* **Production environment** with enhanced security
+* **Environment-specific configurations** and secrets management
+* **SSL/TLS certificates** with automatic renewal
 
 ---
 
@@ -94,6 +114,7 @@ It addresses the loneliness of leadership by enabling peer-to-peer exchange in a
 * Manually escalate or suspend accounts with documented rationale
 * **Billing management**: View subscriptions, payment history, revenue analytics
 * **Session monitoring**: Track active sessions, force logout users
+* **Deployment management**: Monitor CI/CD pipeline and service health
 
 ---
 
@@ -114,12 +135,22 @@ Circle of Peers maintains a dedicated [Community Guidelines](/community-guidelin
 
 ---
 
-## Deployment Notes
+## Development & Deployment
 
-* Hosted on secure VPS or cloud instance (e.g., AWS Lightsail, DigitalOcean)
-* Use Discourse’s Docker-based deploy toolchain
-* Daily backups to Wasabi bucket
-* SMTP server integration for email verification and notifications
+### Local Development
+* **Docker Compose** setup for local development
+* **Staging environment** for testing and validation
+* **Automated testing** with comprehensive test suites
+* **Code quality checks** with linting and security scanning
+
+### Production Deployment
+* **Render cloud platform** with automatic scaling
+* **GitHub Actions** for continuous integration and deployment
+* **Multi-environment** support (staging/production)
+* **Automated health checks** and monitoring
+* **Backup and recovery** procedures
+
+For detailed deployment instructions, see [README_RENDER.md](README_RENDER.md) and [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md).
 
 ---
 
@@ -160,4 +191,6 @@ Circle of Peers maintains a dedicated [Community Guidelines](/community-guidelin
 ### **Support & Resources**
 - Support link: `/support`
 - Landing page: www.circleofpeers.net
+- Development docs: [GETTING_STARTED.md](GETTING_STARTED.md)
+- Deployment guide: [README_RENDER.md](README_RENDER.md)
 
